@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PCElect.Tool": {
+      "commandName": "Project",
+      "commandLineArgs": "a P:\\Proj\\Kita\\EB2020-21 48"
+    }
+  }
+}
