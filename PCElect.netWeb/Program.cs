@@ -17,27 +17,16 @@ namespace PCElect.netWeb
     {
         public static void Main(string[] args)
         {
-            if (!PCElect.Lib.MainHelper.Init(args))
-                return;
-
             CreateHostBuilder(args).Build().Run();
         }
 
-        private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://127.0.0.1:5000");
                 });
     }
 }

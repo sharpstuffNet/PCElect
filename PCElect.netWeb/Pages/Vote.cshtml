@@ -1,0 +1,35 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Uferstädtchen EB Wahl";
+}
+
+<div class="text-center">
+    <h5 class="display-4">Hallo liebe Eltern</h5>
+    <b>Bitte 3 Kreuzchen machen.</b>
+    <form>
+        <table class="text-left" cellspacing="6" cellpadding="6">
+            <tr><td rowspan="3"><input type="checkbox" name="vote" value="HR1" />&nbsp;&nbsp;&nbsp;</td><td rowspan="3"><img src="~/img/HR.jpg" height="150" width="150" /></td><td><b>Horst</b></td></tr>
+            <tr><td>Dennis - Piraten, Vincent - Zwetschgen</td></tr>
+            <tr><td>...</td></tr>
+            <tr><td>&nbsp;</td></tr>
+
+            <tr><td rowspan="3"><input type="checkbox" name="vote" value="HR2" />&nbsp;&nbsp;&nbsp;</td><td rowspan="3"><img src="~/img/HR.jpg" height="150" width="150" /></td><td><b>Horst</b></td></tr>
+            <tr><td>Dennis - Piraten, Vincent - Zwetschgen</td></tr>
+            <tr><td>...</td></tr>
+            <tr><td>&nbsp;</td></tr>
+
+            <tr><td rowspan="3"><input type="checkbox" name="vote" value="HR3" />&nbsp;&nbsp;&nbsp;</td><td rowspan="3"><img src="~/img/HR.jpg" height="150" width="150" /></td><td><b>Horst</b></td></tr>
+            <tr><td>Dennis - Piraten, Vincent - Zwetschgen</td></tr>
+            <tr><td>...</td></tr>
+            <tr><td>&nbsp;</td></tr>
+
+            <tr><td rowspan="3"><input type="checkbox" name="vote" value="HR4" />&nbsp;&nbsp;&nbsp;</td><td rowspan="3"><img src="~/img/HR.jpg" height="150" width="150" /></td><td><b>Horst</b></td></tr>
+            <tr><td>Dennis - Piraten, Vincent - Zwetschgen</td></tr>
+            <tr><td>...</td></tr>
+            <tr><td>&nbsp;</td></tr>
+
+            <tr><td colspan="2"></td><td class="text-right"><button type="button" onclick="javascript:Vote();">Vote</button></td></tr>
+        </table>
+    </form>
+</div>

@@ -5,19 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Security.Cryptography;
-using System.Text;
+using TX=System.Text;
 using System.Web;
 using IO = System.IO;
+using System.Linq;
 
 namespace PCElect.Lib
 {
-    public class PCElect
+    public partial class PCElect
     {
         string _mainDir;
-        IConfigurationRoot _config;
+        IConfiguration _config;
         ILogger _logger;
 
-        public PCElect(string dir, IConfigurationRoot config, ILogger logger)
+        public PCElect(string dir, IConfiguration config, ILogger logger)
         {
             _mainDir = dir;
             _config = config;
@@ -26,26 +27,38 @@ namespace PCElect.Lib
 
         public void Init()
         {
-
+            using (var csp = new RSACryptoServiceProvider(2048))
+            {
+                IO.File.WriteAllBytes(IO.Path.Combine(_mainDir, "Key.blob"), csp.ExportCspBlob(true));
+                IO.File.WriteAllText(IO.Path.Combine(_mainDir, "Key.priv"), csp.ToXmlString(true));
+                IO.File.WriteAllText(IO.Path.Combine(_mainDir, "Key.pub"), csp.ToXmlString(false));
+            }
         }
 
-        public void Results(string v)
+        public void Results()
         {
+            using (var csp = new RSACryptoServiceProvider(2048))
+            {
+                csp.FromXmlString(IO.File.ReadAllText(IO.Path.Combine(_mainDir, "Key.priv")));
 
+                foreach (var item in IO.Directory.GetFiles(_mainDir, "*.vote"))
+                {
+                    var ba= csp.Decrypt(IO.File.ReadAllBytes(item), false);
+                    var bs= TX.UTF8Encoding.UTF8.GetString(ba);
+                    IO.File.WriteAllText(IO.Path.ChangeExtension(item, ".votetxt"),bs);
+                }
+            }
         }
-
-        public void AddVotes(int v)
+            public void AddVotes(int v)
         {
             
             var tmpl = IO.File.ReadAllText(IO.Path.Combine(_mainDir, "Template.html"));
             var j = tmpl.IndexOf("<!--Start-->");
             var k = tmpl.IndexOf("<!--End-->");
-            //var st = tmpl.Substring(0, j);
-            //var en = tmpl.Substring(k+10);
             var mid = tmpl.Substring(j+12, k-j-12);
             var idf = IO.Path.Combine(_mainDir, "IDs.txt");
 
-            var sb = new StringBuilder(tmpl.Substring(0, j));
+            var sb = new TX.StringBuilder(tmpl.Substring(0, j));
 
             using (var random = RandomNumberGenerator.Create())
             {
@@ -72,7 +85,19 @@ namespace PCElect.Lib
             }
             sb.Append(tmpl.Substring(k + 10));
             IO.File.WriteAllText(IO.Path.Combine(_mainDir, "IDs.html"), sb.ToString());
+
+            var hshf = IO.Path.Combine(_mainDir, "HSH.txt");
+            using (var md = SHA512.Create())
+            {
+                var ids = IO.File.ReadAllLines(IO.Path.Combine(_mainDir, "IDs.txt"));
+                var hsh = from a in ids select System.Convert.ToBase64String(md.ComputeHash(TX.UTF8Encoding.UTF8.GetBytes(a)));
+                if (IO.File.Exists(hshf))
+                    IO.File.Delete(hshf);
+                IO.File.WriteAllLines(hshf, hsh);
+            }
         }
+
+       
 
         private string GetFor(string html, string id, int idx, string head)
         {

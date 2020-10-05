@@ -36,7 +36,7 @@ namespace PCElect.Tool
                     case "r":
                         {
                             var pce = new Lib.PCElect(args.Length > 1 ? args[1] : null, PCElect.Lib.MainHelper.Config, PCElect.Lib.MainHelper.Logger);
-                            pce.Results(args.Length > 2 ? args[2] : null);
+                            pce.Results();
                         }
                         break;
                 }
