@@ -45,7 +45,7 @@ namespace PCElect.Lib
                 {
                     var ba= csp.Decrypt(IO.File.ReadAllBytes(item), false);
                     var bs= TX.UTF8Encoding.UTF8.GetString(ba);
-                    IO.File.WriteAllText(IO.Path.ChangeExtension(item, ".votetxt"),bs);
+                    IO.File.WriteAllText(IO.Path.ChangeExtension(item, ".vote.txt"),bs);
                 }
             }
         }

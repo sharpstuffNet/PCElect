@@ -41,17 +41,16 @@ namespace PCElect.Lib
                     {
                         var fi = IO.Directory.GetFiles(_mainDir, "*.vote");
                         idx = fi.Length + 1;
-                        IO.File.WriteAllText(IO.Path.Combine(_mainDir, $"{idx}.vote"), "--");
-                    }
 
-                    if (idx > 1)
-                    {
-                        var tx = IO.File.ReadAllBytes(IO.Path.Combine(_mainDir, $"{idx - 1}.vote"));
-                        sb.AppendLine(System.Convert.ToBase64String(md.ComputeHash(tx)));
-                    }
+                        if (idx > 1)
+                        {
+                            var tx = IO.File.ReadAllBytes(IO.Path.Combine(_mainDir, $"{idx - 1}.vote"));
+                            sb.AppendLine(System.Convert.ToBase64String(md.ComputeHash(tx)));
+                        }
 
-                    var ba = csp.Encrypt(TX.UTF8Encoding.UTF8.GetBytes(sb.ToString()),false);
-                    IO.File.WriteAllBytes(IO.Path.Combine(_mainDir, $"{idx}.vote"), ba);
+                        var ba = csp.Encrypt(TX.UTF8Encoding.UTF8.GetBytes(sb.ToString()), false);
+                        IO.File.WriteAllBytes(IO.Path.Combine(_mainDir, $"{idx}.vote"), ba);
+                    }
                 }
             }
         }
