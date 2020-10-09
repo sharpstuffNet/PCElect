@@ -117,7 +117,7 @@ namespace PCElect.Lib
 
 			sb.AppendLine("Times");
             foreach (var item in from h in perH.OrderBy(x=>x.Key) select h)
-				sb.AppendLine($"{item.Key}\t{item.Value}");
+				sb.AppendLine($"{DTStart.Value.AddHours(item.Key).ToString("dd\tHH")}\t{item.Value}");
 			sb.AppendLine();
 
 			sb.AppendLine("First Votes");
